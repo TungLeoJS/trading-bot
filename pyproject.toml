@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vnstock-tidb-etl"
+version = "0.1.0"
+description = "ETL for vnstock_data listed-equity OHLCV into TiDB Cloud"
+requires-python = ">=3.10"
+dependencies = [
+  "alembic>=1.13",
+  "pandas>=2.0",
+  "PyMySQL>=1.1",
+  "python-dotenv>=1.0",
+  "SQLAlchemy>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["etl*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
