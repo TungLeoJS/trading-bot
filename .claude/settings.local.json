@@ -3,7 +3,16 @@
     "allow": [
       "Bash(python -m pip --version)",
       "Bash(python *)",
-      "Bash(PYTHONIOENCODING=utf-8 python *)"
+      "Bash(PYTHONIOENCODING=utf-8 python *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "mcp__gitnexus__query",
+      "mcp__gitnexus__impact",
+      "Bash(PYTHONIOENCODING=utf-8 PYTHONUTF8=1 python *)",
+      "mcp__gitnexus__detect_changes",
+      "Bash(git *)",
+      "Bash(\"C:/Users/gtldu/.claude/plugins/cache/claude-plugins-official/superpowers/6.1.1/skills/subagent-driven-development/scripts/review-package\" e7e0380 *)",
+      "Bash(/c/Users/gtldu/.venv/Scripts/python.exe -)"
     ]
   }
 }
