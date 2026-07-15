@@ -41,6 +41,23 @@ def test_load_settings_requires_tidb_url(tmp_path: Path):
         raise AssertionError("expected ValueError")
 
 
+def test_load_settings_caps_requests_per_minute_at_global_limit(tmp_path: Path):
+    env_file = tmp_path / ".env"
+    env_file.write_text(
+        "TIDB_URL=mysql+pymysql://user:pass@example.com:4000/db\n"
+        "ETL_REQUESTS_PER_MINUTE=301\n",
+        encoding="utf-8",
+    )
+
+    try:
+        load_settings(env_file)
+    except ValueError as exc:
+        assert "ETL_REQUESTS_PER_MINUTE" in str(exc)
+        assert "300" in str(exc)
+    else:
+        raise AssertionError("expected ValueError")
+
+
 def test_configure_logging_creates_dated_log_file(tmp_path: Path):
     logger = configure_logging(log_dir=tmp_path, run_date=date(2026, 7, 16))
 

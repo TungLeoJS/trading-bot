@@ -17,7 +17,12 @@ class EtlSettings:
     batch_size: int = 100
 
 
-def _int_env(name: str, default: int, values: dict[str, str | None] | None = None) -> int:
+def _int_env(
+    name: str,
+    default: int,
+    values: dict[str, str | None] | None = None,
+    maximum: int | None = None,
+) -> int:
     raw = values.get(name) if values is not None else os.getenv(name)
     if raw is None or raw == "":
         return default
@@ -27,6 +32,8 @@ def _int_env(name: str, default: int, values: dict[str, str | None] | None = Non
         raise ValueError(f"{name} must be an integer") from exc
     if value <= 0:
         raise ValueError(f"{name} must be positive")
+    if maximum is not None and value > maximum:
+        raise ValueError(f"{name} must be less than or equal to {maximum}")
     return value
 
 
@@ -44,7 +51,7 @@ def load_settings(env_file: str | Path | None = None) -> EtlSettings:
     return EtlSettings(
         tidb_url=tidb_url,
         source=(values.get("ETL_SOURCE") if values is not None else os.getenv("ETL_SOURCE")) or "vnstock_data",
-        requests_per_minute=_int_env("ETL_REQUESTS_PER_MINUTE", 300, values),
+        requests_per_minute=_int_env("ETL_REQUESTS_PER_MINUTE", 300, values, maximum=300),
         retry_delay_seconds=_int_env("ETL_RETRY_DELAY_SECONDS", 300, values),
         max_attempts=_int_env("ETL_MAX_ATTEMPTS", 3, values),
         batch_size=_int_env("ETL_BATCH_SIZE", 100, values),
